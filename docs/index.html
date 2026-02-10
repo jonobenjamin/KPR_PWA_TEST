@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/KPR_PWA/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="KPR monitoring app for wildlife tracking and data collection.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="KPR monitoring app">
+  <link rel="apple-touch-icon" href="icons/KPR_icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="icons/KPR_icon.png"/>
+
+  <title>KPR monitoring app</title>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCsHTtPqIcKtqO0XJZz_J7Lf3qLk5nK3c",
+      authDomain: "wildlife-tracker-8e9b6.firebaseapp.com",
+      projectId: "wildlife-tracker-8e9b6",
+      storageBucket: "wildlife-tracker-8e9b6.appspot.com",
+      messagingSenderId: "609408946641",
+      appId: "1:609408946641:web:8b9b9b9b9b9b9b9b9b9b9"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    window.firebaseAuth = getAuth(app);
+  </script>
+
+  <!-- Custom authentication scripts -->
+  <script src="firebase-config.js"></script>
+  <script src="auth-service.js"></script>
+  <script src="auth-ui.js"></script>
+  <script src="auth-controller.js"></script>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
