@@ -79,7 +79,7 @@ class AuthController {
     if (window._flutter && window._flutter.loader) {
       window._flutter.loader.load({
         serviceWorkerSettings: {
-          serviceWorkerVersion: "3967701479"
+          serviceWorkerVersion: "827145334"
         }
       });
       console.log('Flutter loader called successfully');
