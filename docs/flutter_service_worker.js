@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "441349942214f4f4317abcb0f478b1fd",
+const RESOURCES = {"flutter_bootstrap.js": "03a252d41fe5a31ed1aeff5883c6f27c",
 "version.json": "b359803206879e1d7961102c7506ac90",
 "index.html": "8acdc543ba40df467d610b1e41f9f841",
 "/": "8acdc543ba40df467d610b1e41f9f841",
-"main.dart.js": "1d076a6dcd981136fe1e828865ee0c7b",
+"main.dart.js": "6dc697f7fb6375d2cbe8d39c675d7181",
 "flutter.js": "24bc71911b75b5f8135c949e27a2984e",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/KPR_icon.png": "893ac2e2763c1ad90322d3bf662fc931",
@@ -20,7 +20,7 @@ const RESOURCES = {"flutter_bootstrap.js": "441349942214f4f4317abcb0f478b1fd",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "assets/shaders/stretch_effect.frag": "40d68efbbf360632f614c731219e95f0",
 "assets/AssetManifest.bin": "e7da7b9f784ed01c7c0bc7aac1268f51",
-"assets/fonts/MaterialIcons-Regular.otf": "6111cf9a23f7932a82c01fdf3f374745",
+"assets/fonts/MaterialIcons-Regular.otf": "831cdc71597b5346e2e03a58771fc009",
 "assets/assets/Consession_boundary.geojson": "7f04e0566b20c6e8e96feca2a9a4031e",
 "assets/assets/images/KPR_logo.png": "f70391debeb086a102e3f8fe1a447937",
 "assets/assets/KPR_roads.geojson": "15db746ca6531e390dc09b7401888720",
