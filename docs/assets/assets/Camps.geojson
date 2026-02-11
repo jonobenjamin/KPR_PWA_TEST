@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "Camps",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Camps": "Tau Camp" }, "geometry": { "type": "Point", "coordinates": [ 23.512176837991223, -19.118280831790283 ] } },
+{ "type": "Feature", "properties": { "Camps": "Tuludi Camp" }, "geometry": { "type": "Point", "coordinates": [ 23.567553241833846, -19.137904097316813 ] } },
+{ "type": "Feature", "properties": { "Camps": "Sable Alley Camp" }, "geometry": { "type": "Point", "coordinates": [ 23.661513996663984, -19.127895793661974 ] } },
+{ "type": "Feature", "properties": { "Camps": "Little Sable Camp" }, "geometry": { "type": "Point", "coordinates": [ 23.695091925418971, -19.152288147495582 ] } },
+{ "type": "Feature", "properties": { "Camps": "Hyena Pan" }, "geometry": { "type": "Point", "coordinates": [ 23.768931248512644, -18.998579635644123 ] } },
+{ "type": "Feature", "properties": { "Camps": "Elephant Pools Camp" }, "geometry": { "type": "Point", "coordinates": [ 23.850246333286265, -19.022726903452565 ] } },
+{ "type": "Feature", "properties": { "Camps": "Sky Beds" }, "geometry": { "type": "Point", "coordinates": [ 23.845968106741189, -18.972686302768135 ] } }
+]
+}
