@@ -31,12 +31,15 @@
 
   <title>KPR monitoring app</title>
 
-  <!-- Firebase SDKs -->
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Firebase SDKs - must load first, match auth-service version -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCsHTtPqIcKtqO0XJZz_J7Lf3qLk5nK3c",
       authDomain: "wildlife-tracker-8e9b6.firebaseapp.com",
@@ -46,19 +49,15 @@
       appId: "1:609408946641:web:8b9b9b9b9b9b9b9b9b9b9"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    window.firebaseAuth = getAuth(app);
+    window.firebaseAuth = { auth: getAuth(app), db: getFirestore(app) };
   </script>
 
-  <!-- Custom authentication scripts -->
-  <script src="firebase-config.js"></script>
-  <script src="auth-service.js"></script>
-  <script src="auth-ui.js"></script>
-  <script src="auth-controller.js"></script>
-  <link rel="manifest" href="manifest.json">
-</head>
-<body>
-  <script src="flutter_bootstrap.js" async></script>
+  <!-- Auth scripts - load after body exists, auth-service must be module -->
+  <script type="module" src="auth-service.js"></script>
+  <script src="auth-ui.js" defer></script>
+  <script src="auth-controller.js" defer></script>
+
+  <script src="flutter_bootstrap.js"></script>
 </body>
 </html>
