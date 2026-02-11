@@ -36,8 +36,9 @@ if (!window._flutter) {
 }
 _flutter.buildConfig = {"engineRevision":"db373eb85a06eb3d706af362a45d42d0972f4b46","builds":[{"compileTarget":"dart2js","renderer":"canvaskit","mainJsPath":"main.dart.js"},{}]};
 
-_flutter.loader.load({
-  serviceWorkerSettings: {
-    serviceWorkerVersion: "827145334"
-  }
-});
+// Flutter loaded by auth-controller when user is authenticated
+// _flutter.loader.load({
+//   serviceWorkerSettings: {
+//     serviceWorkerVersion: "827145334"
+//   }
+// });
