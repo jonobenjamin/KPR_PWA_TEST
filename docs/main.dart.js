@@ -92754,7 +92754,7 @@ A.atO.prototype={
 $0(){this.a.f=!1},
 $S:0}
 A.BQ.prototype={
-am(){var s,r,q,p=$.aC(),o=t.s,n=A.b(["Sighting","Incident","Maintenance"],o),m=A.b(["Pothole/Road issue","Overgrown branches/pruning","Road closure","Other"],o),l=A.b(["Lion","Leopard","Cheetah","Pangolin","Wild Dog","Aardwolf","Aardvark","Rhino","African Wild Cat","Brown Hyena","Pel's Fishing Owl","Spotted-necked Otter","Cape Clawless Otter","Other"],o),k=A.b(["Poaching","Litter"],o),j=A.b(["Carcass","Snare","Poacher","Fishing net/equipment"],o),i=A.b(["Sable Pride","Tuludi Pride","Golden Boys","Sekoti Pride","Thogotona","Moremi Pride","Other"],o),h=A.b(["Acacia","Bella","Khuhle","Mma Boi","Nicky","Rra Dijo","Rra Tsebe","Other"],o),g=A.b(["Feeding","Hunting","Sleeping","Mating","Foraging","Walking","Other"],o),f=A.b(["Baby","Juvenile","Adult","Mixed ages"],o)
+am(){var s,r,q,p=$.aC(),o=t.s,n=A.b(["Sighting","Incident","Maintenance"],o),m=A.b(["Pothole/ Road issue","Overgrown branches / pruning","Road closure","Other"],o),l=A.b(["Lion","Leopard","Cheetah","Pangolin","Wild Dog","Aardwolf","Aardvark","Rhino","African Wild Cat","Brown Hyena","Pel's Fishing Owl","Spotted-necked Otter","Cape Clawless Otter","Other"],o),k=A.b(["Poaching","Litter"],o),j=A.b(["Carcass","Snare","Poacher","Fishing net/equipment"],o),i=A.b(["Sable Pride","Tuludi Pride","Golden Boys","Sekoti Pride","Thogotona","Moremi Pride","Other"],o),h=A.b(["Acacia","Bella","Khuhle","Mma Boi","Nicky","Rra Dijo","Rra Tsebe","Other"],o),g=A.b(["Feeding","Hunting","Sleeping","Mating","Foraging","Walking","Other"],o),f=A.b(["Baby","Juvenile","Adult","Mixed ages"],o)
 o=A.b(["Elephant","Waterbuck","Lechwe","Other"],o)
 s=$.tI()
 r=t.z
@@ -93376,7 +93376,7 @@ case 6:case 1:return A.N(q,r)
 case 2:return A.M(o.at(-1),r)}})
 return A.O($async$ti,r)},
 N(a){var s=null,r=A.aBn(s,B.WD),q=this.e,p=q?s:new A.av1(this,a)
-return A.aCS(r,new A.bP(B.jT,A.ea(A.b([A.nj(A.f7(A.a78(!1,A.cg(q?"Syncing...":"Sync Offline Data",s,s,s,s,s,s),s,s,s,s,s,s,p,s,s),s,220),s,s),B.aR,B.Wv,A.MQ(new A.kU(A.aFT(this.d,t.z),new A.av2(),s,s,t.lo))],t.D),B.S,B.Y,B.aw),s),s)}}
+return A.aCS(r,A.aVk(new A.bP(B.jT,A.ea(A.b([A.nj(A.f7(A.a78(!1,A.cg(q?"Syncing...":"Sync Offline Data",s,s,s,s,s,s),s,s,s,s,s,s,p,s,s),s,280),s,s),B.aR,B.Wv,A.MQ(new A.kU(A.aFT(this.d,t.z),new A.av2(),s,s,t.lo))],t.D),B.S,B.Y,B.aw),s)),s)}}
 A.av3.prototype={
 $1(a){return J.d(J.aG(a,"synced"),!1)},
 $S:130}
@@ -93563,7 +93563,7 @@ r=p.x
 r.toString
 k.push(A.nq(A.nj(A.ea(A.b([B.H0,B.aR,A.cg(r,o,o,o,B.Tt,B.dm,o),B.aR,A.a78(!1,B.WT,o,o,o,o,o,o,n,o,o)],m),B.S,B.Y,B.by),o,o),B.C,s,o,o,o,o,B.jT,o))}n=A.i_(B.bd,k,B.t,B.bc,o)
 k=A.b([A.aC3(B.Ha,p.ga7i(),"Zoom to concession"),B.ix],m)
-if(p.r!=null)B.b.O(k,A.b([A.aC3(A.ea(A.b([B.H7,A.cg("zoom to me",o,o,o,A.jJ(o,o,o,o,o,o,o,o,o,o,o,10,o,o,B.a0,o,o,!0,o,o,o,o,o,o,o,o),o,o)],m),B.S,B.hO,B.by),p.ga7k(),"Zoom to me"),B.ix,A.aC3(A.ea(A.b([B.Hb,A.cg("pin here",o,o,o,A.jJ(o,o,o,o,o,o,o,o,o,o,o,10,o,o,B.a0,o,o,!0,o,o,o,o,o,o,o,o),o,o)],m),B.S,B.hO,B.by),p.ga9b(),"Drop pin at my location")],m))
+if(p.r!=null)B.b.O(k,A.b([A.aC3(A.ea(A.b([B.H7,A.cg("zoom to me",o,o,o,A.jJ(o,o,o,o,o,o,o,o,o,o,o,8,o,o,B.a0,o,o,!0,o,o,o,o,o,o,o,o),o,o)],m),B.S,B.hO,B.by),p.ga7k(),"Zoom to me"),B.ix,A.aC3(A.ea(A.b([B.Hb,A.cg("pin here",o,o,o,A.jJ(o,o,o,o,o,o,o,o,o,o,o,10,o,o,B.a0,o,o,!0,o,o,o,o,o,o,o,o),o,o)],m),B.S,B.hO,B.by),p.ga9b(),"Drop pin at my location")],m))
 return A.aCS(l,n,A.ea(k,B.S,B.fa,B.aw))}}
 A.ath.prototype={
 $0(){var s=this.a
