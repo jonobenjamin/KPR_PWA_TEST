@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download KPR Monitoring App</title>
 
+  <!-- Use SAME manifest as your Flutter app -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0175C2">
 
@@ -19,102 +20,51 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      text-align: center;
-    }
-
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      font-size: 22px;
     }
 
     button {
       background: #0175C2;
       color: white;
       border: none;
-      padding: 15px 25px;
-      font-size: 16px;
-      border-radius: 8px;
+      padding: 18px 30px;
+      font-size: 18px;
+      border-radius: 10px;
       cursor: pointer;
-      width: 100%;
       display: none;
-    }
-
-    .note {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
-      display: none;
-    }
-
-    a {
-      display: block;
-      margin-top: 20px;
-      font-size: 14px;
-      text-decoration: none;
-      color: #0175C2;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>KPR Monitoring App</h1>
-
-    <button id="installBtn">
-      📲 Download KPR Monitoring App
-    </button>
-
-    <div id="iosNote" class="note">
-      On iPhone:<br>
-      Tap Share → Add to Home Screen
-    </div>
-
-    <a href="./">Open Web Version</a>
-  </div>
+<button id="installBtn">
+  📲 Download KPR Monitoring App
+</button>
 
 <script>
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
-const iosNote = document.getElementById("iosNote");
 
-// Detect iOS
-const isIOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-if (isIOS && !isStandalone) {
-  iosNote.style.display = "block";
-}
-
-// Register service worker manually (important for standalone page)
+// Ensure this page is controlled by the same service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('flutter_service_worker.js');
 }
 
-// Listen for install prompt
+// Listen for install availability
 window.addEventListener('beforeinstallprompt', (e) => {
-  console.log("Install event fired");
   e.preventDefault();
   deferredPrompt = e;
   installBtn.style.display = "block";
 });
 
+// Trigger install when button clicked
 installBtn.addEventListener("click", async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    installBtn.style.display = "none";
-  }
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = "none";
 });
 </script>
 
