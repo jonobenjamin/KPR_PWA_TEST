@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <base href="/KPR_PWA_TEST/docs/">
-
+  <base href="/KPR_PWA_TEST/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download KPR Monitoring App</title>
 
-  <!-- Use SAME manifest as your Flutter app -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0175C2">
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: #f4f6f9;
+      font-family: Arial;
     }
 
     button {
@@ -37,27 +35,18 @@
 
 <body>
 
-<button id="installBtn">
-  📲 Download KPR Monitoring App
-</button>
+<button id="installBtn">📲 Download KPR Monitoring App</button>
 
 <script>
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 
-// Ensure this page is controlled by the same service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('flutter_service_worker.js');
-}
-
-// Listen for install availability
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   installBtn.style.display = "block";
 });
 
-// Trigger install when button clicked
 installBtn.addEventListener("click", async () => {
   if (!deferredPrompt) return;
 
