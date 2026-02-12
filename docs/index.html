@@ -39,6 +39,40 @@
   <script type="module" src="auth-ui.js"></script>
   <script type="module" src="auth-controller.js"></script>
 </head>
+  
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  console.log("Install event fired");
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installBtn = document.createElement("button");
+  installBtn.innerText = "📲 Download KPR Monitoring App";
+  installBtn.style.position = "fixed";
+  installBtn.style.bottom = "20px";
+  installBtn.style.left = "50%";
+  installBtn.style.transform = "translateX(-50%)";
+  installBtn.style.padding = "15px 25px";
+  installBtn.style.fontSize = "16px";
+  installBtn.style.background = "#0175C2";
+  installBtn.style.color = "white";
+  installBtn.style.border = "none";
+  installBtn.style.borderRadius = "8px";
+  installBtn.style.zIndex = "9999";
+
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener("click", async () => {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    installBtn.remove();
+    deferredPrompt = null;
+  });
+});
+</script>
+
 <body>
   <script src="flutter_bootstrap.js" id="flutter-bootstrap-script"></script>
 </body>
