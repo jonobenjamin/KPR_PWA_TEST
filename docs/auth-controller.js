@@ -77,15 +77,32 @@ class AuthController {
     // Start Flutter app - bootstrap script should already be loaded
     console.log('Starting Flutter app - calling loader...');
     if (window._flutter && window._flutter.loader) {
-      window._flutter.loader.load({
+      const loadPromise = window._flutter.loader.load({
         serviceWorkerSettings: {
-          serviceWorkerVersion: "827145334"
+          serviceWorkerVersion: "3980128550"
         }
       });
+      if (loadPromise && typeof loadPromise.then === 'function') {
+        loadPromise.then(() => this.triggerOfflinePrefetch()).catch(() => {});
+      } else {
+        // Fallback: trigger prefetch after a short delay (loader may not return promise)
+        setTimeout(() => this.triggerOfflinePrefetch(), 3000);
+      }
       console.log('Flutter loader called successfully');
     } else {
       console.error('Flutter loader not available');
     }
+  }
+
+  /** Prefetch all app resources + OSM tiles when online so app works in airplane mode */
+  triggerOfflinePrefetch() {
+    if (!navigator.onLine || !navigator.serviceWorker) return;
+    navigator.serviceWorker.ready.then(reg => {
+      if (reg.active) {
+        reg.active.postMessage('downloadOffline');
+        console.log('Triggered offline prefetch for airplane mode');
+      }
+    }).catch(() => {});
   }
 
   showOfflineMessage() {

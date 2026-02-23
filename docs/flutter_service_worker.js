@@ -3,7 +3,7 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "ffeec2696d398a6ce61026c8a10a8dc0",
+const RESOURCES = {"flutter_bootstrap.js": "e9b3bc6658e80f15d68d234555856a0d",
 "version.json": "b359803206879e1d7961102c7506ac90",
 "index.html": "cbb956f6720a915b5fedf77b41245137",
 "/": "cbb956f6720a915b5fedf77b41245137",
@@ -89,7 +89,8 @@ self.addEventListener("activate", function(event) {
       var origin = self.location.origin;
       for (var request of await contentCache.keys()) {
         var key = request.url.substring(origin.length + 1);
-        if (key == "") {
+        if (key.startsWith('KPR_PWA_TEST/')) key = key.substring(13);
+      if (key == "") {
           key = "/";
         }
         // If a resource from the old manifest is not in the new cache, or if
@@ -126,8 +127,32 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== 'GET') {
     return;
   }
+
+  // Cache OSM tiles for offline use (cache when online, serve from cache when offline)
+  if (event.request.url.startsWith('https://tile.openstreetmap.org/')) {
+    event.respondWith(
+      fetch(event.request).then(function(response) {
+        if (response && response.ok) {
+          var clone = response.clone();
+          caches.open('osm-tiles').then(function(cache) { cache.put(event.request, clone); });
+        }
+        return response;
+      }).catch(function() {
+        return caches.open('osm-tiles').then(function(cache) {
+          return cache.match(event.request);
+        });
+      })
+    );
+    return;
+  }
+
   var origin = self.location.origin;
   var key = event.request.url.substring(origin.length + 1);
+  const BASE_PATH = 'KPR_PWA_TEST';
+  // Normalize key for base path deployment (Flutter RESOURCES use paths without base)
+  if (key.startsWith(BASE_PATH + '/')) {
+    key = key.substring(BASE_PATH.length + 1);
+  }
   // Redirect URLs to the index.html
   if (key.indexOf('?v=') != -1) {
     key = key.split('?v=')[0];
@@ -175,10 +200,13 @@ self.addEventListener('message', (event) => {
 // and populate them.
 async function downloadOffline() {
   var resources = [];
+  var origin = self.location.origin;
+  var basePath = 'KPR_PWA_TEST';
   var contentCache = await caches.open(CACHE_NAME);
   var currentContent = {};
   for (var request of await contentCache.keys()) {
     var key = request.url.substring(origin.length + 1);
+    if (key.startsWith(basePath + '/')) key = key.substring(basePath.length + 1);
     if (key == "") {
       key = "/";
     }
