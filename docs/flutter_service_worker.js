@@ -166,8 +166,21 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   // If the URL is the index.html, perform an online-first request.
+  // if (key == '/') {
+  //   return onlineFirst(event);
+  // }
   if (key == '/') {
-    return onlineFirst(event);
+  event.respondWith(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then((response) => {
+        return response || fetch(event.request).then((networkResponse) => {
+          cache.put(event.request, networkResponse.clone());
+          return networkResponse;
+        });
+      });
+    })
+  );
+  return;
   }
   event.respondWith(caches.open(CACHE_NAME)
     .then((cache) =>  {
