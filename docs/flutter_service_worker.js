@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "a5bf90b3fe66cf521d692a636ff94033",
+const RESOURCES = {"flutter_bootstrap.js": "513e3c64c9b0691649336270db7c7b87",
 "version.json": "b359803206879e1d7961102c7506ac90",
 "index.html": "cbb956f6720a915b5fedf77b41245137",
 "/": "cbb956f6720a915b5fedf77b41245137",
-"main.dart.js": "6bdeee0b899a2c8975db0c54543c05b7",
+"main.dart.js": "5b5909bf589c14b8318d06150f882990",
 "flutter.js": "24bc71911b75b5f8135c949e27a2984e",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "0658615ef1bdea8a662d5bb1c68d97b6",
@@ -15,18 +15,19 @@ const RESOURCES = {"flutter_bootstrap.js": "a5bf90b3fe66cf521d692a636ff94033",
 "icons/Icon-maskable-512.png": "f47886b0a99aeb0b6fc9ee305d3b4975",
 "icons/KPR_icon.png": "893ac2e2763c1ad90322d3bf662fc931",
 "icons/Icon-512.png": "f47886b0a99aeb0b6fc9ee305d3b4975",
-"manifest.json": "7ee5446b9ffd47b51a3d8be854988628",
+"manifest.json": "e7e1d6ba00518b730832bc6b0ebdb37f",
 "assets/NOTICES": "32dfc05bfd9a30ced5c2a216016680f8",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/AssetManifest.bin.json": "71fc47bbeaf91734750ced29c88a75ce",
+"assets/AssetManifest.bin.json": "35b2bae5b46a517322b12ed524455555",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "33b7d9392238c04c131b6ce224e13711",
 "assets/packages/flutter_map/lib/assets/flutter_map_logo.png": "208d63cc917af9713fc9572bd5c09362",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "assets/shaders/stretch_effect.frag": "40d68efbbf360632f614c731219e95f0",
-"assets/AssetManifest.bin": "844fbe2b23846f463f64a5ab02a74a1d",
-"assets/fonts/MaterialIcons-Regular.otf": "6111cf9a23f7932a82c01fdf3f374745",
+"assets/AssetManifest.bin": "fed58b285154c96f3caf10a67c7cd72e",
+"assets/fonts/MaterialIcons-Regular.otf": "662463b7e278ac1b2d533c5cc034862d",
 "assets/assets/Consession_boundary.geojson": "7f04e0566b20c6e8e96feca2a9a4031e",
 "assets/assets/images/KPR_logo.png": "f70391debeb086a102e3f8fe1a447937",
+"assets/assets/images/KPR_PWA_Background_image.png": "72e974e963f2e43a63b6b259b330fbae",
 "assets/assets/Camps.geojson": "ab9813ab5ca1bf58bb571440ec5edc06",
 "assets/assets/KPR.svg": "36a2ad74d4133532d672f08066458352",
 "assets/assets/KPR_roads.geojson": "15db746ca6531e390dc09b7401888720",
@@ -166,21 +167,8 @@ self.addEventListener("fetch", (event) => {
     return;
   }
   // If the URL is the index.html, perform an online-first request.
-  // if (key == '/') {
-  //   return onlineFirst(event);
-  // }
   if (key == '/') {
-  event.respondWith(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then((response) => {
-        return response || fetch(event.request).then((networkResponse) => {
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
-        });
-      });
-    })
-  );
-  return;
+    return onlineFirst(event);
   }
   event.respondWith(caches.open(CACHE_NAME)
     .then((cache) =>  {
