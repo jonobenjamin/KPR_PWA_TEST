@@ -3,11 +3,11 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "4ee6d5c833c78e33bd050a0f60749ee2",
-"version.json": "b359803206879e1d7961102c7506ac90",
+const RESOURCES = {"flutter_bootstrap.js": "02dee9cb7110aed50930381eb45625fe",
+"version.json": "791f8d6f66bf40b1d912c6081b28fc69",
 "index.html": "cbb956f6720a915b5fedf77b41245137",
 "/": "cbb956f6720a915b5fedf77b41245137",
-"main.dart.js": "e4dce24d70f8832c9367640d4d82ec95",
+"main.dart.js": "4de3da1f465f240355c65f46002ab24e",
 "flutter.js": "24bc71911b75b5f8135c949e27a2984e",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons/Icon-192.png": "0658615ef1bdea8a662d5bb1c68d97b6",
@@ -129,18 +129,20 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Cache OSM tiles for offline use (cache when online, serve from cache when offline)
+  // Cache OSM tiles for offline use (network-first when online; cache when offline)
   if (event.request.url.startsWith('https://tile.openstreetmap.org/')) {
     event.respondWith(
-      fetch(event.request).then(function(response) {
-        if (response && response.ok) {
-          var clone = response.clone();
-          caches.open('osm-tiles').then(function(cache) { cache.put(event.request, clone); });
-        }
-        return response;
-      }).catch(function() {
-        return caches.open('osm-tiles').then(function(cache) {
-          return cache.match(event.request);
+      caches.open('osm-tiles').then(function(cache) {
+        return fetch(event.request).then(function(response) {
+          if (response && response.ok) {
+            cache.put(event.request, response.clone());
+          }
+          return response;
+        }).catch(function() {
+          return cache.match(event.request).then(function(cached) {
+            if (cached) return cached;
+            return new Response('', { status: 503, statusText: 'Offline — map tile not cached yet' });
+          });
         });
       })
     );
@@ -185,6 +187,34 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+function lon2tile(lon, zoom) {
+  return Math.floor((lon + 180) / 360 * Math.pow(2, zoom));
+}
+function lat2tile(lat, zoom) {
+  var latRad = lat * Math.PI / 180;
+  return Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * Math.pow(2, zoom));
+}
+async function precacheConcessionTiles() {
+  var cache = await caches.open('osm-tiles');
+  var minLat = -19.25, maxLat = -18.65, minLon = 23.45, maxLon = 23.95;
+  for (var z = 10; z <= 13; z++) {
+    var xMin = lon2tile(minLon, z), xMax = lon2tile(maxLon, z);
+    var yMin = lat2tile(maxLat, z), yMax = lat2tile(minLat, z);
+    for (var x = xMin; x <= xMax; x++) {
+      for (var y = yMin; y <= yMax; y++) {
+        var url = 'https://tile.openstreetmap.org/' + z + '/' + x + '/' + y + '.png';
+        try {
+          var existing = await cache.match(url);
+          if (existing) continue;
+          var res = await fetch(url);
+          if (res && res.ok) await cache.put(url, res);
+        } catch (e) { /* skip failed tile */ }
+      }
+    }
+  }
+}
+
 self.addEventListener('message', (event) => {
   // SkipWaiting can be used to immediately activate a waiting service worker.
   // This will also require a page refresh triggered by the main worker.
@@ -192,8 +222,12 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
     return;
   }
-  if (event.data === 'downloadOffline') {
+  if (event.data === 'downloadOffline' || (event.data && event.data.type === 'downloadOffline')) {
     downloadOffline();
+    return;
+  }
+  if (event.data === 'precacheConcessionTiles' || (event.data && event.data.type === 'precacheConcessionTiles')) {
+    event.waitUntil(precacheConcessionTiles());
     return;
   }
 });
