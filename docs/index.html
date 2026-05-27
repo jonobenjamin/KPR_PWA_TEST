@@ -20,6 +20,24 @@
   <title>KPR monitoring app</title>
   <link rel="manifest" href="manifest.json">
 
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      position: fixed;
+      inset: 0;
+    }
+    flt-glass-pane,
+    flutter-view,
+    #flutter-view {
+      height: 100% !important;
+      width: 100% !important;
+    }
+  </style>
+
   <!-- Register service worker immediately so Chrome shows install icon in address bar (before auth) -->
   <script>
     if ('serviceWorker' in navigator) {
