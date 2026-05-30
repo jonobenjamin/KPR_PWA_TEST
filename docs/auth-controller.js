@@ -79,7 +79,7 @@ class AuthController {
     if (window._flutter && window._flutter.loader) {
       const loadPromise = window._flutter.loader.load({
         serviceWorkerSettings: {
-          serviceWorkerVersion: "2597878897"
+          serviceWorkerVersion: "989653583"
         }
       });
       if (loadPromise && typeof loadPromise.then === 'function') {
@@ -130,19 +130,20 @@ class AuthController {
   }
 }
 
-// Initialize auth controller when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired - creating and initializing auth controller');
-  window.authController = new AuthController();
-  window.authController.init();
-});
+// Initialize auth controller once (avoid double Flutter boot)
+(function initAuthControllerOnce() {
+  if (window.__authControllerStarted) return;
+  window.__authControllerStarted = true;
 
-// Also try immediate initialization in case DOMContentLoaded already fired
-if (document.readyState === 'loading') {
-  // Document still loading, wait for DOMContentLoaded
-} else {
-  // Document already loaded, initialize immediately
-  console.log('Document already loaded - creating and initializing auth controller immediately');
-  window.authController = new AuthController();
-  window.authController.init();
-}
+  const start = () => {
+    if (window.authController) return;
+    window.authController = new AuthController();
+    window.authController.init();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
+})();
