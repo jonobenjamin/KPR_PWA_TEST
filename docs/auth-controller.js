@@ -79,7 +79,7 @@ class AuthController {
     if (window._flutter && window._flutter.loader) {
       const loadPromise = window._flutter.loader.load({
         serviceWorkerSettings: {
-          serviceWorkerVersion: "1446418168"
+          serviceWorkerVersion: "77294009"
         }
       });
       if (loadPromise && typeof loadPromise.then === 'function') {
