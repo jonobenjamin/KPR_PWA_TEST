@@ -1,5 +1,5 @@
 /**
- * Warm offline caches for iOS PWA / Safari: app shell + concession map tiles.
+ * Warm offline caches for iOS PWA / Safari: app shell assets only.
  * Runs after the Flutter service worker is active (safe to call multiple times).
  */
 (function () {
@@ -10,7 +10,6 @@
     if (!sw) return;
     try {
       sw.postMessage('downloadOffline');
-      sw.postMessage('precacheConcessionTiles');
     } catch (e) {
       console.warn('pwa-offline-bootstrap:', e);
     }
