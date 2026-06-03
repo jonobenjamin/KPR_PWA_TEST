@@ -8,7 +8,9 @@ class AuthUI {
 
   init() {
     this.createAuthContainer();
-    // Don't show login selection automatically - let auth controller decide
+    // Do NOT show the overlay here — auth-controller decides when to show it.
+    // This prevents a flash of the login overlay for users who are already
+    // authenticated (especially when offline).
   }
 
   createAuthContainer() {
@@ -35,12 +37,12 @@ class AuthUI {
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.8);
-        display: flex;
+        display: none; /* Hidden until auth-controller explicitly shows it */
         justify-content: center;
         align-items: center;
         z-index: 9999;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        padding: 16px; /* Add padding for mobile safe areas */
+        padding: 16px;
         box-sizing: border-box;
       }
 
@@ -282,24 +284,12 @@ class AuthUI {
 
   showLoginTypeSelection() {
     this.currentStep = 'login-type';
+    // Make the overlay visible when we actually need the user to log in.
+    const overlay = document.getElementById('auth-overlay');
+    if (overlay) overlay.style.display = 'flex';
     const content = document.getElementById('auth-content');
-
-    // Check if user has previously authenticated
-    const storedAuth = localStorage.getItem('userAuthenticated');
-    const storedUserName = localStorage.getItem('authenticatedUserName');
-
-    let offlineButton = '';
-    if (storedAuth === 'true' && storedUserName) {
-      offlineButton = `
-        <button class="auth-button secondary" onclick="window.authController.startFlutterApp()">
-          🔄 Continue as ${storedUserName} (Offline)
-        </button>
-      `;
-    }
-
     content.innerHTML = `
         <div class="auth-form">
-          ${offlineButton}
           <button class="auth-button" onclick="window.authUI.showEmailForm()">
             📧 Sign in with Email
           </button>
@@ -587,10 +577,7 @@ class AuthUI {
     if (overlay) {
       overlay.style.display = 'none';
     }
-    // Start the Flutter app via auth controller
-    if (window.authController) {
-      window.authController.startFlutterApp();
-    }
+    // Flutter app will now load
   }
 
   showAuthOverlay() {

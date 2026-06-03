@@ -7,10 +7,12 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="KPR Wildlife Monitoring System">
+  <meta name="theme-color" content="#1b5e20">
 
-  <!-- iOS meta tags & icons -->
+  <!-- iOS PWA meta -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="KPR Monitor">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
@@ -29,6 +31,7 @@
       overflow: hidden;
       position: fixed;
       inset: 0;
+      background: #1b5e20; /* dark green — matches app theme, no black/white flash */
     }
     flt-glass-pane,
     flutter-view,
@@ -36,25 +39,95 @@
       height: 100% !important;
       width: 100% !important;
     }
-  </style>
 
-  <!-- Register service worker immediately so Chrome shows install icon in address bar (before auth) -->
+    /* Splash screen shown while Flutter boots */
+    #kpr-splash {
+      position: fixed;
+      inset: 0;
+      background: #1b5e20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99998; /* below auth overlay (9999) but above everything else */
+      transition: opacity 0.4s ease;
+    }
+    #kpr-splash.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #kpr-splash img {
+      width: 96px;
+      height: 96px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    #kpr-splash p {
+      color: rgba(255,255,255,0.7);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      margin: 0;
+      letter-spacing: 0.05em;
+    }
+    /* Simple spinner */
+    #kpr-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-top: 24px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- Splash: shown until Flutter renders its first frame -->
+  <div id="kpr-splash">
+    <img src="icons/Icon-192.png" alt="KPR" onerror="this.style.display='none'">
+    <p>KPR Monitor</p>
+    <div id="kpr-spinner"></div>
+  </div>
+
   <script>
+    // Register service worker ASAP so it can serve cached assets on reload.
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('flutter_service_worker.js').catch(function() {});
     }
+
+    // Remove splash when Flutter paints its first frame.
+    window.addEventListener('flutter-first-frame', function () {
+      var splash = document.getElementById('kpr-splash');
+      if (splash) {
+        splash.classList.add('hidden');
+        setTimeout(function () { splash.remove(); }, 500);
+      }
+    }, { once: true });
+
+    // Safety net: remove splash after 8 s even if the event never fires.
+    setTimeout(function () {
+      var splash = document.getElementById('kpr-splash');
+      if (splash) {
+        splash.classList.add('hidden');
+        setTimeout(function () { splash.remove(); }, 500);
+      }
+    }, 8000);
   </script>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs (type=module → deferred, run after body scripts) -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="auth-service.js"></script>
   <script type="module" src="auth-ui.js"></script>
   <script type="module" src="auth-controller.js"></script>
+
+  <!-- PWA shell utilities -->
   <script src="app-update.js"></script>
   <script src="pwa-install.js"></script>
   <script src="pwa-offline-bootstrap.js"></script>
-</head>
-<body>
+
+  <!-- Flutter bootstrap — starts the engine immediately -->
   <script src="flutter_bootstrap.js" id="flutter-bootstrap-script"></script>
 </body>
 </html>

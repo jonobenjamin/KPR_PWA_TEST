@@ -3,7 +3,7 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
-const RESOURCES = {"flutter_bootstrap.js": "7aadff928ebcd4f12cb5e47b47ae3fa0",
+const RESOURCES = {"flutter_bootstrap.js": "baf6a0dc3fde336a31bb4fc34478406b",
 "version.json": "954e0901788d4c159b41e9c4f779f3f5",
 "index.html": "cbb956f6720a915b5fedf77b41245137",
 "/": "cbb956f6720a915b5fedf77b41245137",
@@ -170,7 +170,28 @@ self.addEventListener("fetch", (event) => {
   }
   // If the URL is the index.html, perform an online-first request.
   if (key == '/') {
-    return onlineFirst(event);
+    // Serve app shell from cache instantly — never block on network for the HTML.
+    event.respondWith(
+      caches.open(CACHE_NAME).then(function(cache) {
+        return cache.match(event.request).then(function(cached) {
+          if (cached) {
+            // Refresh cache in background when online.
+            if (navigator.onLine !== false) {
+              fetch(event.request).then(function(res) {
+                if (res && res.ok) cache.put(event.request, res.clone());
+              }).catch(function(){});
+            }
+            return cached;
+          }
+          // Nothing in cache yet — go to network.
+          return fetch(event.request).then(function(res) {
+            if (res && res.ok) cache.put(event.request, res.clone());
+            return res;
+          });
+        });
+      })
+    );
+    return;
   }
   event.respondWith(caches.open(CACHE_NAME)
     .then((cache) =>  {
